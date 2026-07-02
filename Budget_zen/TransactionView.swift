@@ -12,14 +12,27 @@ struct TransactionView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var ajout = false
+    @State private var research = ""
+    
     var onAjout: (Transaction) -> Void = { _ in }
+    
+    var results: [Transaction] {
+        if research.isEmpty {
+            return vm.arrOfAllTransaction
+        } else {
+            return vm.arrOfAllTransaction.filter { transaction in
+                transaction.title.localizedCaseInsensitiveContains(research)
+                // localizedCaseInsensitiveContains: insensible a la casse
+            }
+        }
+    }
     
     var body: some View {
 
         NavigationStack{
     
             List {
-                    ForEach(vm.arrOfAllTransaction) {transaction in
+                    ForEach(results) {transaction in
                         
                         HStack(spacing: 24) {
                             
@@ -51,6 +64,9 @@ struct TransactionView: View {
 
                 }
                 .navigationTitle("Transaction")
+                .searchable(text: $research, prompt:"Rechercher une transaction")
+                .textInputAutocapitalization(.never) // Empêche la majuscule automatique
+                
                 .toolbar {
                     ToolbarItem (placement: .topBarTrailing) {
                         Button {
@@ -65,7 +81,6 @@ struct TransactionView: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .padding(.top)
-                        
                     }
                 }
             }
