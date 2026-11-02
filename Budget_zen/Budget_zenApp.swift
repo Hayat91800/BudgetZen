@@ -9,15 +9,12 @@ import SwiftUI
 
 @main
 struct Budget_zenApp: App {
-    @State private var data = MockData()
     @State private var viewModel = ViewModel()
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(data)
                 .environment(viewModel)
         }
     }
 }
-

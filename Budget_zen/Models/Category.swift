@@ -10,46 +10,36 @@ import SwiftUI
 
 enum Category: String, CaseIterable, Hashable {
     case Salaire, Virement, Cadeaux, Alimentation, Logement, Transport, Loisirs, Autre
-    
-    var color: Color {
-        switch self {
-        case .Salaire, .Virement, .Cadeaux:
-            return .green
-        case .Alimentation, .Logement, .Transport:
-            return .red
-        case .Loisirs, .Autre:
-            return .orange
+
+    /// Catégories proposées dans le formulaire selon le type choisi.
+    /// "Autre" est disponible pour les deux types (ex : "Vente occasion" = revenu / Autre).
+    static func categories(pour type: TransactionType) -> [Category] {
+        switch type {
+        case .revenu:
+            return [.Salaire, .Virement, .Cadeaux, .Autre]
+        case .depense:
+            return [.Alimentation, .Logement, .Transport, .Loisirs, .Autre]
         }
     }
-    
-    var revenu: Bool {
+
+    var icon: String {
         switch self {
-        case .Salaire, .Virement, .Cadeaux:
-            return true
-        case .Alimentation, .Logement, .Transport, .Loisirs, .Autre:
-            return false
-        }
-    }
-    
-    var icon: String{
-        switch self {
-        case .Salaire: 
+        case .Salaire:
             return "banknote.fill"
-        case .Virement: 
+        case .Virement:
             return "arrow.up.right.and.arrow.down.left.rectangle.fill"
-        case .Cadeaux: 
+        case .Cadeaux:
             return "gift.fill"
-        case .Alimentation: 
+        case .Alimentation:
             return "cart.fill"
-        case .Logement: 
+        case .Logement:
             return "house.fill"
-        case .Transport: 
+        case .Transport:
             return "tram.fill.tunnel"
-        case .Loisirs: 
+        case .Loisirs:
             return "gamecontroller.fill"
-        case .Autre: 
+        case .Autre:
             return "creditcard.fill"
         }
     }
-    
 }
